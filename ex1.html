@@ -64,6 +64,13 @@
 
     <script>
       //Cau 1
+        function isNumberArr(numArr) {
+          for (let i of numArr) {
+            if (!isNumber(i)) return false;
+          }
+          return true;
+        }
+
       function avgMod3(numArr) {
         let sum = 0;
         let count = 0;
@@ -81,10 +88,9 @@
       document.getElementById("btn1").onclick = function () {
         let numArr = [];
         do {
-          numArr = prompt("Enter number array (format: 1,2,3,4,5...)").split(
-            ","
-          );
-        } while (!numArr.length || numArr.length > 50);
+          numArr = prompt("Enter number array (format: 1,2,3,4,5...)").split(",");
+        } while (!isNumberArr(numArr) || !numArr.length || numArr.length > 50);
+        console.log(numArr);
         console.log(avgMod3(numArr));
       };
 
@@ -102,7 +108,7 @@
         let num;
         do {
             num = prompt("Enter a number");
-        } while (!isNumber(num));
+        } while (!isNumber(num) || parseInt(num) <= 0);
         console.log(isPerfectNumber(num));
       };
 
