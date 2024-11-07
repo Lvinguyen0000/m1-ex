@@ -99,7 +99,10 @@
         return sum == num;
       }
       document.getElementById("btn2").onclick = function () {
-        let num = prompt("Enter a number");
+        let num;
+        do {
+            num = prompt("Enter a number");
+        } while (!isNumber(num));
         console.log(isPerfectNumber(num));
       };
 
