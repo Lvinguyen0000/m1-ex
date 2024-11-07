@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .master {
+        display: flex;
+        gap: 10rem;
+        justify-content: center;
+      }
+
+      table,th,td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      th,td {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      th {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+      button {
+        margin-bottom: 1rem;
+      }
+      caption {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="master">
+      <div class="flex-item">
+        <p>Câu 1</p>
+        <button id="btn1">Run 1</button><br />
+
+        <p>Câu 2</p>
+        <button id="btn2">Run 2</button><br />
+
+        <p>Câu 3</p>
+        <button id="btn3">Run 3</button><br />
+      </div>
+
+      <div class="flex-item">
+        <p>Câu 4</p>
+        <table id="workerTable">
+          <caption>
+            Quan ly cong nhan
+          </caption>
+          <tr>
+            <th>STT</th>
+            <th>Ho va ten</th>
+            <th>Ngay sinh</th>
+            <th>Dia chi</th>
+            <th>Luong</th>
+            <th>Chuc vu</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      //Cau 1
+      function avgMod3(numArr) {
+        let sum = 0;
+        let count = 0;
+        for (let i of numArr) {
+          let temp = parseInt(i);
+          if (!(temp % 3)) {
+            sum += temp;
+            count++;
+          }
+        }
+        if (!count) return 0;
+        return sum / count;
+      }
+
+      document.getElementById("btn1").onclick = function () {
+        let numArr = [];
+        do {
+          numArr = prompt("Enter number array (format: 1,2,3,4,5...)").split(
+            ","
+          );
+        } while (!numArr.length || numArr.length > 50);
+        console.log(avgMod3(numArr));
+      };
+
+      //Cau 2
+      function isPerfectNumber(num) {
+        let sum = 0;
+        for (let i = 1; i < num; i++) {
+          if (num % i == 0) {
+            sum += i;
+          }
+        }
+        return sum == num;
+      }
+      document.getElementById("btn2").onclick = function () {
+        let num = prompt("Enter a number");
+        console.log(isPerfectNumber(num));
+      };
+
+      //Cau 3
+      function isNumber(num) {
+        return !isNaN(parseFloat(num)) && isFinite(num);
+      }
+
+      function isValidDate(date) {
+        let arr = date.split("/");
+        if (arr.length != 2) return false;
+        else if (!isNumber(arr[0]) || !isNumber(arr[1])) return false;
+        else if (arr[0] < 1 || arr[0] > 12) return false;
+        return true;
+      }
+
+      function isLeapYear(year) {
+        return (!(year % 4) && year % 100) || (!(year % 100) && !(year % 400));
+      }
+
+      function callculateDays(month, year) {
+        month = parseInt(month);
+        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+        return 31;
+        } else if (month == 2) {
+        if (isLeapYear(year)) {
+            return 29;
+        } else {
+            return 28;
+        }
+        }
+        return 30;
+        }
+
+      document.getElementById("btn3").onclick = function () {
+        let date = "";
+        do {
+          date = prompt("Enter date: ");
+        } while (!isValidDate(date));
+
+        console.log(callculateDays(date.split("/")[0], date.split("/")[1]));
+      };
+
+      //Cau 4
+      class Worker {
+        constructor(name, dob, addr, salary, position) {
+          this.name = name;
+          this.dob = dob;
+          this.addr = addr;
+          this.salary = salary;
+          this.position = position;
+        }
+      }
+
+      function swapWorker(worker1Index, worker2Index, workerArr) {
+        let temp = workerArr[worker1Index];
+        workerArr[worker1Index] = workerArr[worker2Index];
+        workerArr[worker2Index] = temp;
+      }
+
+      function sortByName(workerArr) {
+        for (let i = 0; i < workerArr.length - 1; i++) {
+          for (let j = i + 1; j < workerArr.length; j++) {
+            if (workerArr[i].name > workerArr[j].name) {
+              swapWorker(i, j, workerArr);
+            }
+          }
+        }
+      }
+
+      function createWorkerTable(workerArr) {
+        let table = document.getElementById("workerTable");
+        let stt = 1;
+        for (let worker of workerArr) {
+          let row = document.createElement("tr");
+          let sttCell = document.createElement("td");
+          let nameCell = document.createElement("td");
+          let dobCell = document.createElement("td");
+          let addrCell = document.createElement("td");
+          let salaryCell = document.createElement("td");
+          let positionCell = document.createElement("td");
+          sttCell.innerHTML = stt;
+          nameCell.innerHTML = worker.name;
+          dobCell.innerHTML = worker.dob;
+          addrCell.innerHTML = worker.addr;
+          salaryCell.innerHTML = worker.salary;
+          positionCell.innerHTML = worker.position;
+          row.appendChild(sttCell);
+          row.appendChild(nameCell);
+          row.appendChild(dobCell);
+          row.appendChild(addrCell);
+          row.appendChild(salaryCell);
+          row.appendChild(positionCell);
+          table.appendChild(row);
+          stt++;
+        }
+      }
+
+      let workersInfo = [
+        {name: "Adam",dob: "01/01/1990",addr: "123 Main St",salary: 50000,position: "Manager"},
+        {name: "Ann",dob: "02/02/1991",addr: "456 Main St",salary: 60000,position: "Developer"},
+        {name: "Eve",dob: "03/03/1992",addr: "789 Main St",salary: 70000,position: "Designer"},
+        {name: "Charlie",dob: "04/04/1993",addr: "101 Main St",salary: 80000,position: "Tester"},
+        {name: "Horace",dob: "05/05/1994",addr: "111 Main St",salary: 90000,position: "Manager"}
+      ];
+
+      let workerArr = [];
+      for (let worker of workersInfo) {
+        workerArr.push(
+          new Worker(
+            worker.name,
+            worker.dob,
+            worker.addr,
+            worker.salary,
+            worker.position
+          )
+        );
+      }
+
+      sortByName(workerArr);
+      createWorkerTable(workerArr);
+    </script>
+  </body>
+</html>
